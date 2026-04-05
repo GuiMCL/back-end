@@ -2,8 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authRoutes = authRoutes;
 const auth_service_1 = require("../services/auth.service");
-const COOKIE_NAME = 'token';
-const COOKIE_MAX_AGE = 7 * 24 * 60 * 60; // 7 days in seconds
 async function authRoutes(app) {
     // POST /api/auth/register
     app.post('/api/auth/register', async (request, reply) => {
@@ -16,14 +14,7 @@ async function authRoutes(app) {
         }
         try {
             const result = await (0, auth_service_1.register)(name, username, password);
-            reply.setCookie(COOKIE_NAME, result.token, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'lax',
-                maxAge: COOKIE_MAX_AGE,
-                path: '/',
-            });
-            return reply.status(201).send({ host: result.host });
+            return reply.status(201).send({ host: result.host, token: result.token });
         }
         catch (err) {
             if (err instanceof auth_service_1.AuthError) {
@@ -40,14 +31,7 @@ async function authRoutes(app) {
         }
         try {
             const result = await (0, auth_service_1.login)(username, password);
-            reply.setCookie(COOKIE_NAME, result.token, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'lax',
-                maxAge: COOKIE_MAX_AGE,
-                path: '/',
-            });
-            return reply.send({ host: result.host });
+            return reply.send({ host: result.host, token: result.token });
         }
         catch (err) {
             if (err instanceof auth_service_1.AuthError) {
@@ -58,12 +42,12 @@ async function authRoutes(app) {
     });
     // POST /api/auth/logout
     app.post('/api/auth/logout', async (_request, reply) => {
-        reply.clearCookie(COOKIE_NAME, { path: '/' });
         return reply.send({ message: 'Logout realizado com sucesso' });
     });
     // GET /api/auth/me
     app.get('/api/auth/me', async (request, reply) => {
-        const token = request.cookies[COOKIE_NAME];
+        const authHeader = request.headers['authorization'];
+        const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
         if (!token) {
             return reply.status(401).send({ error: 'Não autenticado' });
         }

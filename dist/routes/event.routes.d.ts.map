@@ -1,1 +1,1 @@
-{"version":3,"file":"event.routes.d.ts","sourceRoot":"","sources":["../../src/routes/event.routes.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,eAAe,EAAgC,MAAM,SAAS,CAAA;AA2CvE,wBAAsB,WAAW,CAAC,GAAG,EAAE,eAAe,iBA8FrD"}
+{"version":3,"file":"event.routes.d.ts","sourceRoot":"","sources":["../../src/routes/event.routes.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,eAAe,EAAgC,MAAM,SAAS,CAAA;AA+BvE,wBAAsB,WAAW,CAAC,GAAG,EAAE,eAAe,iBAgErD"}
