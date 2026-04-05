@@ -1,10 +1,16 @@
 import Fastify from 'fastify'
+import cors from '@fastify/cors'
 import { authRoutes } from './routes/auth.routes'
 import { eventRoutes } from './routes/event.routes'
 import { itemRoutes } from './routes/item.routes'
 import { listaRoutes } from './routes/lista.routes'
 
 const app = Fastify({ logger: true })
+
+app.register(cors, {
+  origin: true,
+  credentials: true,
+})
 
 // Routes
 app.register(authRoutes)
