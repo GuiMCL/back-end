@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: "api-cha",
-      cwd: "/root/apps/cha-de-panela/api",
+      cwd: "/root/apps/back-end",
       script: "node",
       args: "dist/server.js",
       instances: 1,
