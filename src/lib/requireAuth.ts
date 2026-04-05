@@ -2,11 +2,8 @@ import { FastifyRequest, FastifyReply } from 'fastify'
 import { verifyToken } from '../services/auth.service'
 
 export async function requireAuth(request: FastifyRequest, reply: FastifyReply): Promise<string | null> {
-  const cookieToken = request.cookies['token']
   const authHeader = request.headers['authorization']
-  const bearerToken = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null
-
-  const token = cookieToken ?? bearerToken
+  const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null
 
   if (!token) {
     reply.status(401).send({ error: 'Não autenticado' })
